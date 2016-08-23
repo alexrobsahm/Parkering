@@ -75,5 +75,6 @@ public class ParkingActivity extends Activity implements
         super.onStop();
         toastUtil.cancel();
         googleApiClient.disconnect();
+        finish();
     }
 }

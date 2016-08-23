@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="@string/settings_group_header">
+        <EditTextPreference
+            android:title="@string/settings_reminder_header"
+            android:summary="@string/settings_reminder_summary"
+            android:defaultValue="@string/reminder_text"
+            android:key="settings_reminder_text"/>
+    </PreferenceCategory>
+    <Preference
+        android:title="@string/app_name"
+        android:summary="@string/settings_app_summary"
+        android:key="@string/settings_activity_key">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.robsahm.parking"
+            android:targetClass="com.robsahm.parking.ParkingActivity" />
+    </Preference>
+</PreferenceScreen>

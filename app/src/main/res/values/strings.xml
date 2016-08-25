@@ -14,7 +14,7 @@
     <string name="gps_failure">Kunde inte fastställa din postition</string>
 
     <string name="get_parking_data">Hämtar parkeringsinformation</string>
-    <string name="no_parking_data">Kunde inte hitta något parkeringsinformation</string>
+    <string name="no_parking_data">Ingen parkeringsinformation funnen</string>
 
     <string name="settings_group_header">Inställningar</string>
     <string name="settings_reminder_header">Påminnelsetext</string>

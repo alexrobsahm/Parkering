@@ -56,8 +56,9 @@ public class ParkingDataReceiver extends AsyncTask<String, Void, Response> {
 
     @Override
     protected void onPostExecute(final Response response) {
-        if (response == null) {
-            toastUtil.show(R.string.no_parking_data, Toast.LENGTH_LONG);
+        if (response == null || response.features.size() == 0) {
+            toastUtil.show(R.string.no_parking_data, Toast.LENGTH_SHORT);
+            waitForToastBeforeFinish();
             return;
         }
 
@@ -88,18 +89,21 @@ public class ParkingDataReceiver extends AsyncTask<String, Void, Response> {
         if (calendarIntent != null) {
             activity.startActivity(calendarIntent);
         } else {
-            //Display error message before killing app
-            new Thread(){
-                @Override
-                public void run() {
-                    try {
-                        Thread.sleep(2000); //Toast.LENGTH_SHORT
-                        activity.finish();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }.start();
+            waitForToastBeforeFinish();
         }
+    }
+
+    private void waitForToastBeforeFinish() {
+        new Thread(){
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(2000); //Toast.LENGTH_SHORT
+                    activity.finish();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
     }
 }

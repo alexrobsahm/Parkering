@@ -34,13 +34,11 @@ public class ParkingActivity extends Activity implements
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
                 .setMaxWaitTime(5000);
 
-        if (googleApiClient == null) {
-            googleApiClient = new GoogleApiClient.Builder(this)
-                    .addApi(LocationServices.API)
-                    .addConnectionCallbacks(this)
-                    .addOnConnectionFailedListener(this)
-                    .addApi(AppIndex.API).build();
-        }
+        googleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(LocationServices.API)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(AppIndex.API).build();
     }
 
     @Override
@@ -70,6 +68,7 @@ public class ParkingActivity extends Activity implements
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
         toastUtil.show(connectionResult.getErrorMessage(), Toast.LENGTH_LONG);
+        finish();
     }
 
     @Override

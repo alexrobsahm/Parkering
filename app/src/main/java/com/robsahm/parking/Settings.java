@@ -1,10 +1,10 @@
 package com.robsahm.parking;
 
-import android.preference.PreferenceActivity;
+import android.app.Activity;
 import android.preference.PreferenceFragment;
 import android.os.Bundle;
 
-public class Settings extends PreferenceActivity {
+public class Settings extends Activity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

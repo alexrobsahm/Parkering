@@ -5,6 +5,9 @@
     <string name="reminder_text">Städdag MC-plats</string>
 
     <string name="weekday_error">Fel uppstod vid beräkning av veckodag</string>
+    <string name="cleaning_in_progress">Städning pågår. Du kan inte parkera här!</string>
+
+    <string name="parking_list_dialog_header">Vart står du parkerad?</string>
 
     <string name="gps_start">Fastställer din position</string>
     <string name="gps_search">Säkerställer position</string>

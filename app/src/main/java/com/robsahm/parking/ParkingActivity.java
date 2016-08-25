@@ -20,11 +20,13 @@ public class ParkingActivity extends Activity implements
     private GoogleApiClient googleApiClient;
     private LocationRequest locationRequest;
     private ToastUtil toastUtil;
+    private ParkingDataReceiver parkingDataReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        parkingDataReceiver = new ParkingDataReceiver(this);
         toastUtil = ToastUtil.getInstance(this);
 
         locationRequest = new LocationRequest()
@@ -60,7 +62,7 @@ public class ParkingActivity extends Activity implements
 
     @Override
     public void onLocationChanged(Location location) {
-        new ParkingDataReceiver(this).execute(
+        parkingDataReceiver.execute(
                 String.valueOf(location.getLatitude()),
                 String.valueOf(location.getLongitude()));
     }

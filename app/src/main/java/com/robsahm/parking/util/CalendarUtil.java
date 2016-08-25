@@ -21,7 +21,10 @@ public class CalendarUtil {
         Calendar end = CalendarUtil.getEnd(property);
 
         if (start == null || end == null) {
-            ToastUtil.getInstance(context).show(R.string.weekday_error, Toast.LENGTH_LONG);
+            ToastUtil.getInstance(context).show(R.string.weekday_error, Toast.LENGTH_SHORT);
+            return null;
+        } else if (end.before(start)) {
+            ToastUtil.getInstance(context).show(R.string.cleaning_in_progress, Toast.LENGTH_SHORT);
             return null;
         }
 

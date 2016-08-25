@@ -1,7 +1,11 @@
 package com.robsahm.parking.util;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.provider.CalendarContract;
 import android.widget.Toast;
@@ -80,7 +84,9 @@ public class CalendarUtil {
     }
 
     private static Intent createCalendarIntent(Context context, Property property, Calendar start, Calendar end) {
-        String reminder_text = PreferenceManager.getDefaultSharedPreferences(context).getString("settings_reminder_text", "");
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String reminder_text = sharedPreferences.getString("settings_reminder_text", "");
+
         Intent calendarIntent = new Intent(Intent.ACTION_INSERT);
         calendarIntent.setData(CalendarContract.Events.CONTENT_URI);
         calendarIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -90,5 +96,23 @@ public class CalendarUtil {
         calendarIntent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, end.getTimeInMillis());
 
         return calendarIntent;
+    }
+
+    public static CharSequence[][] getCalendarData(Context context, String[] projection) {
+        ContentResolver contentResolver = context.getContentResolver();
+        Uri uri = CalendarContract.Calendars.CONTENT_URI;
+        Cursor cursor = contentResolver.query(uri, projection, null, null, null);
+
+        CharSequence[][] calendarData = new CharSequence[projection.length][cursor.getCount()];
+
+        int i = 0;
+        while(cursor.moveToNext()) {
+            for (int j=0; j<projection.length; j++) {
+                calendarData[j][i] = cursor.getString(j);
+            }
+            i++;
+        }
+
+        return calendarData;
     }
 }

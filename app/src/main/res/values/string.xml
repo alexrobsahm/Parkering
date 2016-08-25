@@ -18,4 +18,6 @@
     <string name="settings_reminder_summary">Texten som ska visas i påminnelsen</string>
     <string name="settings_app_summary">Klicka här för att skapa en påminnelse</string>
     <string name="settings_activity_key">activity_key</string>
+    <string name="settings_calendar_header">Kalender</string>
+    <string name="settings_calendar_summary">Välj vilken kalender påminnelsen ska sparas i</string>
 </resources>

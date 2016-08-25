@@ -7,6 +7,10 @@
             android:summary="@string/settings_reminder_summary"
             android:defaultValue="@string/reminder_text"
             android:key="settings_reminder_text"/>
+        <ListPreference
+            android:title="@string/settings_calendar_header"
+            android:summary="@string/settings_calendar_summary"
+            android:key="settings_calendar_id"/>
     </PreferenceCategory>
     <Preference
         android:title="@string/app_name"

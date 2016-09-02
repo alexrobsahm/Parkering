@@ -16,6 +16,14 @@
     <string name="get_parking_data">Hämtar parkeringsinformation</string>
     <string name="no_parking_data">Ingen parkeringsinformation funnen</string>
 
+    <string name="welcome_header">Välkommen till Parkering</string>
+    <string name="welcome_text">
+        Här kan du ställa in vilken text du vill ha i påminnelsen samt skapa påminnelser.
+        Enklaste sättet att använda appen är att skapa en genväg till appen på skrivbordet.
+        Då kan du skapa påminnelser utan att behöva öppna appen.
+    </string>
+    <string name="welcome_button">OK</string>
+
     <string name="settings_group_header">Inställningar</string>
     <string name="settings_reminder_header">Påminnelsetext</string>
     <string name="settings_reminder_summary">Texten som ska visas i påminnelsen</string>

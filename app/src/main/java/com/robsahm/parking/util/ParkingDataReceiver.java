@@ -36,7 +36,7 @@ public class ParkingDataReceiver extends AsyncTask<String, Void, Response> {
     protected Response doInBackground(String... params) {
         try {
             URL url = new URL(BuildConfig.API_URL +
-                "?radius=100" +
+                "?radius=50" +
                 "&lat=" + params[0] +
                 "&lng=" + params[1] +
                 "&outputFormat=json" +

@@ -21,8 +21,4 @@ public class ParkingShortcutActivity extends Activity {
         setResult(RESULT_OK, addIntent);
         finish();
     }
-
-    protected void onDestroy() {
-        super.onDestroy();
-    }
 }

@@ -1,14 +1,13 @@
 package com.robsahm.parking.util;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.robsahm.parking.BuildConfig;
+import com.robsahm.parking.DialogActivity;
 import com.robsahm.parking.R;
 import com.robsahm.parking.util.json.Property;
 import com.robsahm.parking.util.json.Response;
@@ -24,19 +23,19 @@ import java.net.URL;
  */
 public class ParkingDataReceiver extends AsyncTask<String, Void, Response> {
 
-    private Activity activity;
+    private Context context;
     private ToastUtil toastUtil;
 
-    public ParkingDataReceiver(Activity activity) {
-        this.activity = activity;
-        toastUtil = ToastUtil.getInstance(activity);
+    public ParkingDataReceiver(Context context) {
+        this.context = context;
+        toastUtil = ToastUtil.getInstance(context);
     }
 
     @Override
     protected Response doInBackground(String... params) {
         try {
             URL url = new URL(BuildConfig.API_URL +
-                "?radius=50" +
+                "?radius=100" +
                 "&lat=" + params[0] +
                 "&lng=" + params[1] +
                 "&outputFormat=json" +
@@ -56,54 +55,26 @@ public class ParkingDataReceiver extends AsyncTask<String, Void, Response> {
 
     @Override
     protected void onPostExecute(final Response response) {
-        if (response == null || response.features.size() == 0) {
+        if (response == null || response.getFeatures().size() == 0) {
             toastUtil.show(R.string.no_parking_data, Toast.LENGTH_SHORT);
-            waitForToastBeforeFinish();
             return;
         }
 
-        if (response.features.size() == 1) {
-            sendIntent(response.features.get(0).properties);
+        if (response.getFeatures().size() == 1) {
+            sendIntent(response.getFeature(0).getProperties());
         } else {
-            AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-            builder.setTitle(R.string.parking_list_dialog_header);
-            builder.setItems(response.toCharSequence(), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    sendIntent(response.features.get(i).properties);
-                }
-            });
-            builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                @Override
-                public void onCancel(DialogInterface dialogInterface) {
-                    activity.finish();
-                }
-            });
-            builder.create().show();
+            Intent intent = new Intent(context, DialogActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.putExtra("response", response);
+            context.startActivity(intent);
         }
     }
 
     private void sendIntent(Property properties) {
-        Intent calendarIntent = CalendarUtil.getCalendarIntent(activity, properties);
+        Intent calendarIntent = CalendarUtil.getCalendarIntent(context, properties);
 
         if (calendarIntent != null) {
-            activity.startActivity(calendarIntent);
-        } else {
-            waitForToastBeforeFinish();
+            context.startActivity(calendarIntent);
         }
-    }
-
-    private void waitForToastBeforeFinish() {
-        new Thread(){
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(2000); //Toast.LENGTH_SHORT
-                    activity.finish();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }.start();
     }
 }

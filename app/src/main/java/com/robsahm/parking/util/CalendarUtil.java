@@ -21,10 +21,12 @@ public class CalendarUtil {
         Calendar end = CalendarUtil.getEnd(property);
 
         if (start == null || end == null) {
-            ToastUtil.getInstance(context).show(R.string.weekday_error, Toast.LENGTH_SHORT);
+            ToastUtil.getInstance(context).show(R.string.weekday_error,
+                    Toast.LENGTH_SHORT);
             return null;
         } else if (end.before(start)) {
-            ToastUtil.getInstance(context).show(R.string.cleaning_in_progress, Toast.LENGTH_SHORT);
+            ToastUtil.getInstance(context).show(R.string.cleaning_in_progress,
+                    Toast.LENGTH_SHORT);
             return null;
         }
 
@@ -32,11 +34,11 @@ public class CalendarUtil {
     }
 
     private static Calendar getEnd(Property property) {
-        return createCalendar(property, property.START_TIME);
+        return createCalendar(property, property.getStartTime());
     }
 
     private static Calendar getStart(Property property) {
-        return createCalendar(property, property.END_TIME);
+        return createCalendar(property, property.getEndTime());
     }
 
     private static Calendar createCalendar(Property property, int time) {
@@ -62,7 +64,7 @@ public class CalendarUtil {
     }
 
     private static int getWeekday(Property property) {
-        switch (property.START_WEEKDAY) {
+        switch (property.getStartWeekday()) {
             case "måndag":
                 return Calendar.MONDAY;
             case "tisdag":
@@ -82,13 +84,19 @@ public class CalendarUtil {
         }
     }
 
-    private static Intent createCalendarIntent(Context context, Property property, Calendar start, Calendar end) {
-        String reminder_text = PreferenceManager.getDefaultSharedPreferences(context).getString("settings_reminder_text", "");
+    private static Intent createCalendarIntent(
+            Context context,
+            Property property,
+            Calendar start,
+            Calendar end) {
+        String reminder_text = PreferenceManager.getDefaultSharedPreferences(context)
+                .getString("settings_reminder_text", "");
         Intent calendarIntent = new Intent(Intent.ACTION_INSERT);
         calendarIntent.setData(CalendarContract.Events.CONTENT_URI);
-        calendarIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        calendarIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK |
+                Intent.FLAG_ACTIVITY_NEW_TASK);
         calendarIntent.putExtra(CalendarContract.Events.TITLE, reminder_text);
-        calendarIntent.putExtra(CalendarContract.Events.EVENT_LOCATION, property.ADDRESS);
+        calendarIntent.putExtra(CalendarContract.Events.EVENT_LOCATION, property.getAddress());
         calendarIntent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, start.getTimeInMillis());
         calendarIntent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, end.getTimeInMillis());
 

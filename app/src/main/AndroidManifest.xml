@@ -9,6 +9,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name">
+
         <activity
             android:name=".ParkingActivity"
             android:label="@string/app_name"
@@ -17,6 +18,7 @@
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".Settings"
             android:theme="@android:style/Theme.Black">
@@ -25,6 +27,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".ParkingShortcutActivity"
             android:label="@string/shortcut_label">
@@ -33,9 +36,24 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".DialogActivity"
+            android:label="@string/parking_list_dialog_header"
+            android:theme="@android:style/Theme.DeviceDefault.Light.Dialog"
+            android:excludeFromRecents="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-    </application>
 
+        <service
+            android:name=".ParkingService"
+            android:enabled="true"
+            android:exported="false"
+            android:process=":parking_service" />
+    </application>
 </manifest>

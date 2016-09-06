@@ -13,7 +13,7 @@
         android:summary="@string/settings_app_summary"
         android:key="@string/settings_activity_key">
         <intent
-            android:action="android.intent.action.VIEW"
+            android:action="android.intent.action.MAIN"
             android:targetPackage="com.robsahm.parking"
             android:targetClass="com.robsahm.parking.ParkingActivity" />
     </Preference>

@@ -17,19 +17,8 @@ public class Settings extends Activity {
         SharedPreferences sharedPreferences = getSharedPreferences("PREFERENCE", MODE_PRIVATE);
 
         boolean isFirstTime = sharedPreferences.getBoolean("isFirstTime", true);
-        if (isFirstTime){
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(R.string.welcome_header);
-            builder.setMessage(R.string.welcome_text);
-            builder.setNeutralButton(R.string.welcome_button, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    dialogInterface.cancel();
-                }
-            });
-            builder.create().show();
-
-            sharedPreferences.edit().putBoolean("isFirstTime", false).apply();
+        if (isFirstTime) {
+            displayWelcomeDialog(sharedPreferences);
         }
     }
 
@@ -52,5 +41,20 @@ public class Settings extends Activity {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.preference);
         }
+    }
+
+    private void displayWelcomeDialog(SharedPreferences sharedPreferences) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.welcome_header);
+        builder.setMessage(R.string.welcome_text);
+        builder.setNeutralButton(R.string.welcome_button, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+        builder.create().show();
+
+        sharedPreferences.edit().putBoolean("isFirstTime", false).apply();
     }
 }

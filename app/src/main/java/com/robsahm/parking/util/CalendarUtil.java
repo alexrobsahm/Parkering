@@ -17,12 +17,20 @@ import java.util.Calendar;
 public class CalendarUtil {
 
     public static Intent getCalendarIntent(Context context, Property property) {
-        Calendar start = CalendarUtil.getStart(property);
-        Calendar end = CalendarUtil.getEnd(property);
+        Calendar start = getStart(property);
+        Calendar end = getEnd(property);
+        Calendar periodStart = getPeriodStart(property);
+        Calendar now = Calendar.getInstance();
+        Calendar periodEnd = getPeriodEnd(property);
 
         if (start == null || end == null) {
             ToastUtil.getInstance(context).show(R.string.weekday_error,
                     Toast.LENGTH_SHORT);
+            return null;
+        } else if (now.before(periodStart) || now.after(periodEnd)) {
+            ToastUtil.getInstance(context).show(context.getString(R.string.not_in_period)
+                    + " " + getPeriod(property),
+                    Toast.LENGTH_LONG);
             return null;
         } else if (end.before(start)) {
             ToastUtil.getInstance(context).show(R.string.cleaning_in_progress,
@@ -39,6 +47,14 @@ public class CalendarUtil {
 
     private static Calendar getStart(Property property) {
         return createCalendar(property, property.getEndTime());
+    }
+
+    private static Calendar getPeriodStart(Property property) {
+        return createPeriodCalendar(property.getStartMonth(), property.getStartDay());
+    }
+
+    private static Calendar getPeriodEnd(Property property) {
+        return createPeriodCalendar(property.getEndMonth(), property.getEndDay());
     }
 
     private static Calendar createCalendar(Property property, int time) {
@@ -63,6 +79,17 @@ public class CalendarUtil {
         return calendar;
     }
 
+    private static Calendar createPeriodCalendar(int month, int day) {
+        Calendar calendar = Calendar.getInstance();
+
+        if (month > 0 && day > 0) {
+            calendar.set(Calendar.MONTH, month);
+            calendar.set(Calendar.DAY_OF_MONTH, day);
+        }
+
+        return calendar;
+    }
+
     private static int getWeekday(Property property) {
         switch (property.getStartWeekday()) {
             case "måndag":
@@ -82,6 +109,11 @@ public class CalendarUtil {
             default:
                 return -1;
         }
+    }
+
+    private static String getPeriod(Property property) {
+        return property.getStartDay() + "/" + property.getStartMonth() + " - " +
+                property.getEndDay() + "/" + property.getEndMonth();
     }
 
     private static Intent createCalendarIntent(

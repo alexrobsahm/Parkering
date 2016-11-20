@@ -20,6 +20,7 @@ public class ParkingService extends IntentService implements GoogleApiClient.Con
     private LocationRequest locationRequest;
     private ToastUtil toastUtil;
     private ParkingDataReceiver parkingDataReceiver;
+    private long startTime;
 
     public ParkingService() {
         super("ParkingService");
@@ -28,12 +29,15 @@ public class ParkingService extends IntentService implements GoogleApiClient.Con
     @Override
     public void onCreate() {
         super.onCreate();
+
+        startTime = System.currentTimeMillis();
+
         parkingDataReceiver = new ParkingDataReceiver(this);
         toastUtil = ToastUtil.getInstance(this);
 
         locationRequest = new LocationRequest()
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-                .setMaxWaitTime(5000);
+                .setInterval(100);
 
         googleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(LocationServices.API)
@@ -43,20 +47,28 @@ public class ParkingService extends IntentService implements GoogleApiClient.Con
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
     protected void onHandleIntent(Intent intent) {
         googleApiClient.connect();
     }
 
     @Override
     public void onConnected(Bundle bundle) {
-        toastUtil.show(R.string.gps_start, Toast.LENGTH_SHORT);
-        LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
+        toastUtil.show(R.string.gps_start, Toast.LENGTH_LONG);
+        Location location = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+        if (isLastLocationNewerThanTwoMinutes(location)) {
+            fetchParkingInfo(location);
+        } else {
+            LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
+        }
     }
 
     @Override
-    public void onConnectionSuspended(int i) {
-
-    }
+    public void onConnectionSuspended(int i) {}
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
@@ -65,10 +77,32 @@ public class ParkingService extends IntentService implements GoogleApiClient.Con
 
     @Override
     public void onLocationChanged(Location location) {
-        if (System.currentTimeMillis() - location.getTime() < 300000) {
-            parkingDataReceiver.execute(
-                    String.valueOf(location.getLatitude()),
-                    String.valueOf(location.getLongitude()));
+        if (location.getAccuracy() < 50) {
+            fetchParkingInfo(location);
+        } else if (location.getAccuracy() < 50) {
+            fetchParkingInfo(location);
+        } else {
+            if(timeOut()) {
+                googleApiClient.disconnect();
+                toastUtil.show(R.string.no_parking_data, Toast.LENGTH_SHORT);
+            } else {
+                toastUtil.show(R.string.gps_search_continues, Toast.LENGTH_LONG);
+            }
         }
+    }
+
+    private void fetchParkingInfo(Location location) {
+        googleApiClient.disconnect();
+        parkingDataReceiver.execute(
+                String.valueOf(location.getLatitude()),
+                String.valueOf(location.getLongitude()));
+    }
+
+    private boolean isLastLocationNewerThanTwoMinutes(Location location) {
+        return location != null && System.currentTimeMillis() - location.getTime() < 120000;
+    }
+
+    private boolean timeOut() {
+        return System.currentTimeMillis() - startTime > 30000;
     }
 }

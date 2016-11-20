@@ -1,22 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Parkera</string>
-    <string name="shortcut_label">Parkera</string>
+    <string name="app_name">Memory Lane STHLM</string>
+    <string name="shortcut_label">Memory Lane</string>
     <string name="reminder_text">Städdag MC-plats</string>
 
     <string name="weekday_error">Fel uppstod vid beräkning av veckodag</string>
     <string name="cleaning_in_progress">Städning pågår. Du kan inte parkera här!</string>
+    <string name="not_in_period">Gäller ej som MC-ruta utanför följande datumperiod:</string>
 
     <string name="parking_list_dialog_header">Vart står du parkerad?</string>
 
     <string name="gps_start">Fastställer din position</string>
     <string name="gps_search">Säkerställer position</string>
     <string name="gps_failure">Kunde inte fastställa din postition</string>
+    <string name="gps_search_continues">Söker...</string>
 
     <string name="get_parking_data">Hämtar parkeringsinformation</string>
     <string name="no_parking_data">Ingen parkeringsinformation funnen</string>
 
-    <string name="welcome_header">Välkommen till Parkering</string>
+    <string name="welcome_header">Välkommen till Memory Lane STHLM</string>
     <string name="welcome_text">
         Här kan du ställa in vilken text du vill ha i påminnelsen samt skapa påminnelser.
         Enklaste sättet att använda appen är att skapa en genväg till appen på skrivbordet.

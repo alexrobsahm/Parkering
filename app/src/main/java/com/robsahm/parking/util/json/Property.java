@@ -11,12 +11,20 @@ public class Property implements Parcelable {
     private int START_TIME;
     private int END_TIME;
     private String START_WEEKDAY;
+    private int START_MONTH;
+    private int START_DAY;
+    private int END_MONTH;
+    private int END_DAY;
 
     protected Property(Parcel in) {
         ADDRESS = in.readString();
         START_TIME = in.readInt();
         END_TIME = in.readInt();
         START_WEEKDAY = in.readString();
+        START_MONTH = in.readInt();
+        START_DAY = in.readInt();
+        END_MONTH = in.readInt();
+        END_DAY = in.readInt();
     }
 
     public static final Creator<Property> CREATOR = new Creator<Property>() {
@@ -43,9 +51,14 @@ public class Property implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(ADDRESS);
+        parcel.writeInt(START_MONTH);
         parcel.writeInt(START_TIME);
         parcel.writeInt(END_TIME);
         parcel.writeString(START_WEEKDAY);
+        parcel.writeInt(START_MONTH);
+        parcel.writeInt(START_DAY);
+        parcel.writeInt(END_MONTH);
+        parcel.writeInt(END_DAY);
     }
 
     public String getAddress() {
@@ -62,5 +75,19 @@ public class Property implements Parcelable {
 
     public String getStartWeekday() {
         return START_WEEKDAY;
+    }
+
+    public int getStartMonth() {
+        return START_MONTH;
+    }
+
+    public int getStartDay() {
+        return START_DAY;
+    }
+    public int getEndMonth() {
+        return END_MONTH;
+    }
+    public int getEndDay() {
+        return END_DAY;
     }
 }

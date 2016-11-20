@@ -35,7 +35,7 @@ public class ParkingDataReceiver extends AsyncTask<String, Void, Response> {
     protected Response doInBackground(String... params) {
         try {
             URL url = new URL(BuildConfig.API_URL +
-                "?radius=100" +
+                "?radius=50" +
                 "&lat=" + params[0] +
                 "&lng=" + params[1] +
                 "&outputFormat=json" +
@@ -61,20 +61,17 @@ public class ParkingDataReceiver extends AsyncTask<String, Void, Response> {
         }
 
         if (response.getFeatures().size() == 1) {
-            sendIntent(response.getFeature(0).getProperties());
+            Intent calendarIntent = CalendarUtil.getCalendarIntent(context,
+                    response.getFeature(0).getProperties());
+
+            if (calendarIntent != null) {
+                context.startActivity(calendarIntent);
+            }
         } else {
             Intent intent = new Intent(context, DialogActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.putExtra("response", response);
             context.startActivity(intent);
-        }
-    }
-
-    private void sendIntent(Property properties) {
-        Intent calendarIntent = CalendarUtil.getCalendarIntent(context, properties);
-
-        if (calendarIntent != null) {
-            context.startActivity(calendarIntent);
         }
     }
 }
